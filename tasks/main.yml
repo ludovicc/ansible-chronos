@@ -1,7 +1,15 @@
 ---
-- include: common.yml
-
 - include: Debian.yml
   when: ansible_os_family == "Debian"
 
-- include: deploy.yml
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
+- include: Debian-conf.yml
+  when: ansible_os_family == "Debian"
+
+- include: haproxy.yml
+  when: haproxy_script_location != ""
+
+- name: Start Chronos service
+  service: name=chronos state=restarted 

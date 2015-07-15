@@ -1,0 +1,4 @@
+---
+- name: Create Chronos default conf file
+  template: src=chronos_conf.j2 dest=/etc/default/chronos
+    owner="root" group="root" mode=0664
