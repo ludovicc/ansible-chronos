@@ -20,7 +20,7 @@
     - key: master
       value: "{{ chronos_runtime_master }}"
     - key: hostname
-      value: "{{ inventory_hostname }}"
+      value: "{{ hostname }}"
     - key: http_port
       value: "{{ chronos_http_port }}"
     #- key: mem_opts
