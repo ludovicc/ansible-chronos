@@ -15,6 +15,8 @@ chronos_zk_mesos_master: "zk://{{ chronos_zk_dns }}:{{ chronos_zk_port }}/{{ mes
 chronos_hostname: "{{ inventory_hostname }}"
 chronos_port: 4400
 
+chronos_env_vars: []
+
 # TODO chronos_env_java_opts: "-Xmx512m"
 
 haproxy_script_location: "/usr/local/bin"

@@ -22,18 +22,25 @@
     - chronos
 
 - name: systemd check
-  stat: path=/usr/lib/systemd/system/
+  stat: path=/usr/lib/systemd/
   register: systemd_check
 
 - name: configure chronos unit file
   sudo: yes
   replace:
-    dest: /usr/lib/systemd/system/chronos.service
+    dest: "{{ chronos_system_service_config_file }}"
     regexp: "=network.target"
     replace: '=mesos-master.service'
   when: systemd_check.stat.exists == true
   notify:
-    - reload chronos
+    - restart chronos
+  tags:
+    - chronos
+
+- name: systemd environment variables
+  template: src=sysconfig.j2 dest=/etc/sysconfig/chronos
+  when: systemd_check.stat.exists == true
+  notify:
     - restart chronos
   tags:
     - chronos
@@ -41,13 +48,12 @@
 - name: configure chronos to wait for zookeeper before starting
   sudo: yes
   lineinfile:
-    dest: /usr/lib/systemd/system/chronos.service
+    dest: "{{ chronos_system_service_config_file }}"
     line: "ExecStartPre=/usr/local/bin/zookeeper-wait-for-listen.sh {{ chronos_zk_dns }}"
     insertbefore: "^ExecStart="
     state: present
   when: systemd_check.stat.exists == true
   notify:
-    - reload chronos
     - restart chronos
   tags:
     - chronos
@@ -88,12 +94,20 @@
   tags:
     - chronos
 
-- name: enable and start chronos
+- name: start chronos
   sudo: yes
   service:
-    enabled: yes
     name: chronos
     state: started
+  tags:
+    - chronos
+
+- name: enable chronos service
+  sudo: yes
+  service:
+    name: chronos
+    enabled: yes
+  when: systemd_check.stat.exists == false
   tags:
     - chronos
 

@@ -7,3 +7,4 @@ mesosphere_releases:
 
 mesosphere_repo: "http://repos.mesosphere.com/el/{{ os_version_major }}/noarch/RPMS/{{ mesosphere_releases[os_version_major] }}"
 
+chronos_system_service_config_file: "/usr/lib/systemd/system/chronos.service"
