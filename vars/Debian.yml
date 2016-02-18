@@ -1,3 +1,3 @@
-chronos_apt_repo:  "deb http://repos.mesosphere.io/{{ansible_distribution|lower}} {{ansible_distribution_release|lower}} main"
+chronos_apt_repo:  "deb http://repos.mesosphere.io/{{ansible_distribution|lower}} {{ansible_distribution_release|lower|replace('wily','vivid')}} main"
 
 chronos_system_service_config_file: "/etc/systemd/system/multi-user.target.wants/chronos.service"
